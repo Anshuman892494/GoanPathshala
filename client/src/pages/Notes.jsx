@@ -27,7 +27,7 @@ const Notes = () => {
                 <Navbar />
                 <main className="flex-1 p-8 bg-gray-900 relative overflow-hidden mt-20">
                     <div className="absolute top-0 left-0 w-full h-full overflow-hidden z-0 pointer-events-none">
-                        <div className="absolute top-[-20%] right-[-10%] w-[50%] h-[50%] bg-red-900/10 rounded-full blur-[120px]"></div>
+                        <div className="absolute top-[-20%] right-[-10%] w-[50%] h-[50%] bg-green-900/10 rounded-full blur-[120px]"></div>
                         <div className="absolute bottom-[-10%] left-[-10%] w-[30%] h-[30%] bg-blue-900/05 rounded-full blur-[100px]"></div>
                     </div>
 
@@ -45,14 +45,14 @@ const Notes = () => {
 
                         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
                             {notesData.map((note) => (
-                                <div key={note.id} className="bg-gray-800/40 backdrop-blur-sm rounded-2xl border border-gray-700/50 p-6 flex flex-col hover:border-red-500/50 transition-all duration-300 group shadow-lg">
+                                <div key={note.id} className="bg-gray-800/40 backdrop-blur-sm rounded-2xl border border-gray-700/50 p-6 flex flex-col hover:border-green-500/50 transition-all duration-300 group shadow-lg">
                                     <div className="flex-1">
                                         <div className="flex items-center justify-between mb-2">
-                                            <span className="text-xs font-bold uppercase tracking-wider text-red-500 bg-red-500/10 px-2 py-1 rounded">
+                                            <span className="text-xs font-bold uppercase tracking-wider text-green-500 bg-green-500/10 px-2 py-1 rounded">
                                                 {note.category}
                                             </span>
                                         </div>
-                                        <h3 className="text-xl font-bold text-gray-100 mb-3 group-hover:text-red-400 transition-colors">
+                                        <h3 className="text-xl font-bold text-gray-100 mb-3 group-hover:text-green-400 transition-colors">
                                             {note.title}
                                         </h3>
                                         <p className="text-gray-400 text-sm leading-relaxed mb-6">
@@ -63,7 +63,7 @@ const Notes = () => {
                                         href={note.link}
                                         target="_blank"
                                         rel="noopener noreferrer"
-                                        className="w-full py-3 px-4 bg-gray-700 hover:bg-red-600 text-white font-bold rounded-xl flex items-center justify-center gap-2 transition-all duration-200 border border-gray-600 hover:border-red-500 hover:shadow-lg hover:shadow-red-600/20"
+                                        className="w-full py-3 px-4 bg-gray-700 hover:bg-green-600 text-white font-bold rounded-xl flex items-center justify-center gap-2 transition-all duration-200 border border-gray-600 hover:border-green-500 hover:shadow-lg hover:shadow-green-600/20"
                                     >
                                         <span className="material-symbols-outlined text-xl">download</span>
                                         Download PDF

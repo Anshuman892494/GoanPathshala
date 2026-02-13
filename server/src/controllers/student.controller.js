@@ -352,3 +352,33 @@ exports.resetPassword = async (req, res) => {
         res.status(500).json({ message: error.message });
     }
 };
+
+// @desc    Mark Attendance
+// @route   POST /api/students/:id/attendance
+exports.markAttendance = async (req, res) => {
+    try {
+        const student = await Student.findById(req.params.id);
+        if (!student) {
+            return res.status(404).json({ message: 'Student not found' });
+        }
+
+        // Get current date in YYYY-MM-DD format (local date)
+        const today = new Date().toLocaleDateString('en-CA'); // en-CA gives YYYY-MM-DD
+
+        // Check if already marked
+        if (student.attendance.includes(today)) {
+            return res.json({
+                message: 'Attendance already marked for today',
+                today,
+                attendance: student.attendance
+            });
+        }
+
+        student.attendance.push(today);
+        await student.save();
+
+        res.json({ message: 'Attendance marked successfully', today, attendance: student.attendance });
+    } catch (error) {
+        res.status(500).json({ message: error.message });
+    }
+};

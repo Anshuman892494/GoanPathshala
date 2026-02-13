@@ -32,6 +32,10 @@ const studentSchema = new mongoose.Schema({
         type: String,
         unique: true,
         sparse: true
+    },
+    attendance: {
+        type: [String], // Array of date strings (YYYY-MM-DD)
+        default: []
     }
 }, {
     timestamps: true

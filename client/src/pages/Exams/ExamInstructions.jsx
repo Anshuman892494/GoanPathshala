@@ -27,10 +27,10 @@ const ExamInstructions = () => {
             {/* <main className="ml-64 mt-20 p-10 bg-gray-900 min-h-[calc(100vh-5rem)]"> */}
             <main className="p-10 bg-gray-900 min-h-[calc(100vh-5rem)]">
                 <div className="max-w-3xl mx-auto bg-gray-800 rounded-xl shadow-lg overflow-hidden border border-gray-700">
-                    <div className="bg-red-700 px-8 py-6 flex items-center">
+                    <div className="bg-green-700 px-8 py-6 flex items-center">
                         <div>
                             <h2 className="text-2xl font-bold text-white">Terms & Conditions</h2>
-                            <p className="text-red-100 mt-1">Please review the rules before proceeding.</p>
+                            <p className="text-green-100 mt-1">Please review the rules before proceeding.</p>
                         </div>
                     </div>
 
@@ -62,7 +62,7 @@ const ExamInstructions = () => {
                                     type="checkbox"
                                     checked={accepted}
                                     onChange={(e) => setAccepted(e.target.checked)}
-                                    className="mt-1 h-5 w-5 text-red-600 focus:ring-red-500 border-gray-500 rounded bg-gray-700"
+                                    className="mt-1 h-5 w-5 text-green-600 focus:ring-green-500 border-gray-500 rounded bg-gray-700"
                                 />
                                 <span className="text-gray-300 select-none">
                                     I have read and understood the instructions. I agree to abide by the rules and regulations of this examination.
@@ -75,7 +75,7 @@ const ExamInstructions = () => {
                                 onClick={handleStart}
                                 disabled={!accepted}
                                 className={`px-8 py-4 rounded-lg font-bold text-lg shadow-md transition-all transform hover:scale-105 flex items-center ${accepted
-                                    ? 'bg-red-600 text-white hover:bg-red-700 cursor-pointer'
+                                    ? 'bg-green-600 text-white hover:bg-green-700 cursor-pointer'
                                     : 'bg-gray-700 text-gray-500 cursor-not-allowed'
                                     }`}
                             >

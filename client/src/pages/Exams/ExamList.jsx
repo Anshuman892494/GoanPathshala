@@ -27,11 +27,11 @@ const ExamList = ({ category }) => {
                     return a._id.localeCompare(b._id);
                 });
 
-                // Filter out expired exams (students shouldn't see them)
+                // Filter out expigreen exams (students shouldn't see them)
                 const now = new Date();
                 const activeExams = sorted.filter(exam => {
                     if (!exam.endTime) return true; // No end time = always active
-                    return new Date(exam.endTime) > now; // Only show if not expired
+                    return new Date(exam.endTime) > now; // Only show if not expigreen
                 });
 
                 setExams(activeExams);
@@ -123,7 +123,7 @@ const ExamList = ({ category }) => {
             return {
                 label: 'Exam Ended',
                 canStart: false,
-                color: 'text-red-600 bg-red-50'
+                color: 'text-green-600 bg-green-50'
             };
         }
 
@@ -147,7 +147,7 @@ const ExamList = ({ category }) => {
             <main className="ml-64 mt-20 p-10 bg-gray-900 min-h-[calc(100vh-5rem)]">
                 <h2 className="text-3xl font-bold text-gray-100 mb-6">{category === 'Class Test' ? 'Class Tests' : 'Available Exams'}</h2>
 
-                {error && <div className="text-red-600 mb-4">{error}</div>}
+                {error && <div className="text-green-600 mb-4">{error}</div>}
 
                 {exams.length === 0 && !error ? (
                     <div className="text-gray-400">No exams available at the moment.</div>
@@ -156,10 +156,10 @@ const ExamList = ({ category }) => {
                         {exams.map((exam) => {
                             const status = getExamStatus(exam);
                             return (
-                                <div key={exam._id} className="bg-gray-800 rounded-xl shadow-lg hover:shadow-2xl transition-all p-6 border border-gray-700 flex flex-col justify-between group hover:border-red-500/50">
+                                <div key={exam._id} className="bg-gray-800 rounded-xl shadow-lg hover:shadow-2xl transition-all p-6 border border-gray-700 flex flex-col justify-between group hover:border-green-500/50">
                                     <div>
                                         <div className="flex justify-between items-start mb-2">
-                                            <h3 className="text-xl font-bold text-gray-100 group-hover:text-red-400 transition-colors">{exam.title}</h3>
+                                            <h3 className="text-xl font-bold text-gray-100 group-hover:text-green-400 transition-colors">{exam.title}</h3>
                                             <span className={`text-xs px-2 py-1 rounded-full font-medium ${status.color}`}>
                                                 {status.label}
                                             </span>
@@ -210,7 +210,7 @@ const ExamList = ({ category }) => {
                                                             ? (exam.hasSecurityKey ? `/exams/${exam._id}/security-check` : `/exams/${exam._id}/instructions`)
                                                             : `/exams/${exam._id}`
                                                     }
-                                                    className="block w-full text-center bg-red-600 hover:bg-red-700 text-white font-semibold py-2 px-4 rounded transition-colors flex items-center justify-center"
+                                                    className="block w-full text-center bg-green-600 hover:bg-green-700 text-white font-semibold py-2 px-4 rounded transition-colors flex items-center justify-center"
                                                 >
                                                     <span className="material-symbols-outlined mr-2">
                                                         {exam.securityEnabled ? (exam.hasSecurityKey ? 'lock' : 'shield') : 'play_arrow'}
