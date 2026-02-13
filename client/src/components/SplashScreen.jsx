@@ -6,7 +6,7 @@ const SplashScreen = ({ onFinish }) => {
     const [progress, setProgress] = useState(0);
 
     useEffect(() => {
-        const DURATION = 5000; // 5 seconds
+        const DURATION = 2000; // 2 seconds
         const INTERVAL = 100; // Update every 100ms
         const STEPS = DURATION / INTERVAL;
 
@@ -34,23 +34,23 @@ const SplashScreen = ({ onFinish }) => {
         >
             <div className="text-center flex flex-col items-center w-full max-w-md px-4">
                 <div className="text-center mb-12">
-                    <h1 className="text-5xl font-extrabold text-transparent bg-clip-text bg-gradient-to-r from-red-500 to-red-600 mb-4 tracking-tight drop-shadow-sm filter">
-                        {APP_NAME} <span className="text-white"> ExamPoint</span>
+                    <h1 className="text-5xl font-extrabold text-transparent bg-clip-text bg-gradient-to-r from-green-500 to-green-600 mb-4 tracking-tight drop-shadow-sm filter">
+                        {APP_NAME}<span className="text-white">Pathshala</span>
                     </h1>
-                    <div className="h-1 w-24 bg-red-600 mx-auto rounded-full mb-4"></div>
+                    <div className="h-1 w-24 bg-green-600 mx-auto rounded-full mb-4"></div>
                     <p className="text-gray-300 text-lg font-light tracking-wide">
-                        Online Examination Platform by
+                        Online Learning Platform for Urban Students
                     </p>
-                    <p className="text-xl text-gray-100 font-semibold mt-2 tracking-wide">
+                    {/* <p className="text-xl text-gray-100 font-semibold mt-2 tracking-wide">
                         Advance Computer Career Institute
-                    </p>
+                    </p> */}
                 </div>
 
                 {/* Progress Bar Container */}
                 <div className="w-full h-2 bg-gray-800 rounded-full overflow-hidden relative mb-4">
                     {/* Animated Progress Bar */}
                     <div
-                        className="absolute top-0 left-0 h-full bg-red-600 transition-all duration-100 ease-linear shadow-[0_0_10px_rgba(220,38,38,0.7)]"
+                        className="absolute top-0 left-0 h-full bg-green-600 transition-all duration-100 ease-linear shadow-[0_0_10px_rgba(220,38,38,0.7)]"
                         style={{ width: `${progress}%` }}
                     ></div>
                 </div>
@@ -59,11 +59,6 @@ const SplashScreen = ({ onFinish }) => {
                     <span className="animate-pulse">Loading System...</span>
                     <span>{Math.round(progress)}%</span>
                 </div>
-            </div>
-
-            {/* Version Footer */}
-            <div className="absolute bottom-8 text-gray-600 text-[10px] tracking-[0.4em] uppercase font-bold">
-                VERSION V4.0
             </div>
         </div>
     );

@@ -45,7 +45,7 @@ const examSchema = new mongoose.Schema({
     },
     category: {
         type: String,
-        enum: ['All Exam', 'Class Test', 'Computer GK', 'CCC', 'ADCA', 'O Level', 'Tally'],
+        enum: ['All Exam', 'Computer GK', 'Tally'],
         default: 'All Exam',
         required: true
     },

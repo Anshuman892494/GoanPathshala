@@ -27,7 +27,7 @@ const AdminLogin = () => {
             localStorage.setItem('admin_session', JSON.stringify(data));
             navigate('/admin/dashboard');
         } catch (err) {
-            setError(err.response?.data?.message || 'Invalid Credentials');
+            setError(err.response?.data?.message || 'Invalid Cgreenentials');
         } finally {
             setLoading(false);
         }
@@ -62,10 +62,10 @@ const AdminLogin = () => {
     return (
         <div className="min-h-screen bg-gray-900 flex flex-col justify-center items-center p-6">
             <div className="text-center">
-                <h1 className="text-5xl font-extrabold text-transparent bg-clip-text bg-gradient-to-r from-red-500 to-red-600 mb-4 tracking-tight drop-shadow-sm filter">
+                <h1 className="text-5xl font-extrabold text-transparent bg-clip-text bg-gradient-to-r from-green-500 to-green-600 mb-4 tracking-tight drop-shadow-sm filter">
                     {APP_NAME} <span className="text-white">ExamPoint</span>
                 </h1>
-                <div className="h-1 w-24 bg-red-600 mx-auto rounded-full mb-4"></div>
+                <div className="h-1 w-24 bg-green-600 mx-auto rounded-full mb-4"></div>
                 <p className="text-white text-2xl font-bold mb-10 ">Admin Portal</p>
             </div>
             <div className="bg-gray-800 rounded-xl shadow-lg p-8 w-full max-w-md border border-gray-700">
@@ -73,7 +73,7 @@ const AdminLogin = () => {
                     {showForgot ? 'Reset Password' : 'Login'}
                 </h2>
 
-                {error && <div className="bg-red-900/30 text-red-500 p-3 rounded-lg mb-4 text-sm border border-red-500/30">{error}</div>}
+                {error && <div className="bg-green-900/30 text-green-500 p-3 rounded-lg mb-4 text-sm border border-green-500/30">{error}</div>}
                 {success && <div className="bg-green-900/30 text-green-500 p-3 rounded-lg mb-4 text-sm border border-green-500/30">{success}</div>}
 
                 {!showForgot ? (
@@ -84,8 +84,8 @@ const AdminLogin = () => {
                                 type="text"
                                 value={username}
                                 onChange={(e) => setUsername(e.target.value)}
-                                required
-                                className="w-full px-4 py-2 bg-gray-700 border border-gray-600 rounded-lg text-white focus:ring-2 focus:ring-red-500 outline-none"
+                                requigreen
+                                className="w-full px-4 py-2 bg-gray-700 border border-gray-600 rounded-lg text-white focus:ring-2 focus:ring-green-500 outline-none"
                                 placeholder="Enter name"
                             />
                         </div>
@@ -95,7 +95,7 @@ const AdminLogin = () => {
                                 <button
                                     type="button"
                                     onClick={() => { setShowForgot(true); setError(null); setSuccess(null); }}
-                                    className="text-xs text-red-500 hover:text-red-400 font-medium"
+                                    className="text-xs text-green-500 hover:text-green-400 font-medium"
                                 >
                                     Forgot Password?
                                 </button>
@@ -104,21 +104,21 @@ const AdminLogin = () => {
                                 type="password"
                                 value={password}
                                 onChange={(e) => setPassword(e.target.value)}
-                                required
-                                className="w-full px-4 py-2 bg-gray-700 border border-gray-600 rounded-lg text-white focus:ring-2 focus:ring-red-500 outline-none"
+                                requigreen
+                                className="w-full px-4 py-2 bg-gray-700 border border-gray-600 rounded-lg text-white focus:ring-2 focus:ring-green-500 outline-none"
                                 placeholder="••••••••"
                             />
                         </div>
                         <button
                             type="submit"
                             disabled={loading}
-                            className="w-full bg-red-600 text-white font-bold py-3 rounded-lg hover:bg-red-700 shadow-lg transition-colors disabled:opacity-50"
+                            className="w-full bg-green-600 text-white font-bold py-3 rounded-lg hover:bg-green-700 shadow-lg transition-colors disabled:opacity-50"
                         >
                             {loading ? 'Logging in...' : 'Login'}
                         </button>
 
                         <div className="text-center mt-6 border-t border-gray-700 pt-4">
-                            <Link to="/login" className="text-sm text-red-500 hover:text-red-400 font-medium transition-colors">
+                            <Link to="/login" className="text-sm text-green-500 hover:text-green-400 font-medium transition-colors">
                                 Login as Student
                             </Link>
                         </div>
@@ -132,9 +132,9 @@ const AdminLogin = () => {
                                     type="text"
                                     value={phone}
                                     onChange={(e) => setPhone(e.target.value)}
-                                    required
-                                    className="w-full px-4 py-2 bg-gray-700 border border-gray-600 rounded-lg text-white focus:ring-2 focus:ring-red-500 outline-none"
-                                    placeholder="Enter your registered phone"
+                                    requigreen
+                                    className="w-full px-4 py-2 bg-gray-700 border border-gray-600 rounded-lg text-white focus:ring-2 focus:ring-green-500 outline-none"
+                                    placeholder="Enter your registegreen phone"
                                 />
                             </div>
                         ) : (
@@ -144,8 +144,8 @@ const AdminLogin = () => {
                                     type="password"
                                     value={newPassword}
                                     onChange={(e) => setNewPassword(e.target.value)}
-                                    required
-                                    className="w-full px-4 py-2 bg-gray-700 border border-gray-600 rounded-lg text-white focus:ring-2 focus:ring-red-500 outline-none"
+                                    requigreen
+                                    className="w-full px-4 py-2 bg-gray-700 border border-gray-600 rounded-lg text-white focus:ring-2 focus:ring-green-500 outline-none"
                                     placeholder="Enter new password"
                                 />
                             </div>
@@ -155,7 +155,7 @@ const AdminLogin = () => {
                             <button
                                 type="submit"
                                 disabled={loading}
-                                className="w-full bg-red-600 text-white font-bold py-3 rounded-lg hover:bg-red-700 shadow-lg transition-colors disabled:opacity-50"
+                                className="w-full bg-green-600 text-white font-bold py-3 rounded-lg hover:bg-green-700 shadow-lg transition-colors disabled:opacity-50"
                             >
                                 {loading ? 'Processing...' : (forgotStep === 1 ? 'Verify Phone' : 'Reset Password')}
                             </button>

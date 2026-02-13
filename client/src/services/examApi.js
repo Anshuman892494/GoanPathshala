@@ -43,8 +43,7 @@ export const submitExam = (submissionData) => api.post("/results/submit", submis
 export const getResultById = (id) => api.get(`/results/${id}`);
 export const getUserResults = (sessionId) => api.get(`/results/session/${sessionId}`);
 
-export const startSession = (name, regNo) =>
-    api.post("/session/start", { name, regNo });
+
 
 // Admin
 export const adminLogin = (creds) => api.post("/admin/login", creds);
@@ -73,9 +72,10 @@ export const getAllStudents = () => api.get("/students");
 export const getStudentById = (id) => api.get(`/students/${id}`);
 export const updateStudent = (id, data) => api.put(`/students/${id}`, data);
 export const deleteStudent = (id) => api.delete(`/students/${id}`);
-export const studentLogin = (regNo, password) => api.post("/students/login", { regNo, password });
+export const studentLogin = (email, password) => api.post("/students/login", { email, password });
 export const resetStudentPassword = (data) => api.post("/students/reset-password", data);
 export const verifyStudentDetails = (data) => api.post("/students/verify-details", data);
+export const registerStudent = (data) => api.post("/students/register", data);
 
 export const sendFeedback = (data) => api.post("/feedback/send", data);
 

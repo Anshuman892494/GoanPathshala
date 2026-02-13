@@ -11,6 +11,9 @@ router.route('/')
     .get(protect, getAllStudents)
     .post(protect, addStudent);
 
+// Public registration route
+router.post('/register', addStudent);
+
 router.route('/bulk')
     .post(protect, addStudentsBulk);
 

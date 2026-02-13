@@ -6,6 +6,9 @@ const DashboardCard = ({ title, value, icon, color }) => {
         green: 'bg-green-900/20 text-green-400',
         purple: 'bg-purple-900/20 text-purple-400',
         indigo: 'bg-indigo-900/20 text-indigo-400',
+        red: 'bg-red-900/20 text-red-400',
+        yellow: 'bg-yellow-900/20 text-yellow-400',
+
     };
 
     return (

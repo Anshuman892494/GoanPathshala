@@ -15,7 +15,7 @@ const Navbar = () => {
     const [hasNewUpdate, setHasNewUpdate] = useState(false);
 
     useEffect(() => {
-        // Red Dot Logic: Check if version has changed
+        // green Dot Logic: Check if version has changed
         const lastSeenVersion = localStorage.getItem('lastSeenUpdateVersion');
         if (lastSeenVersion !== UPDATE_POPUP_VERSION) {
             setHasNewUpdate(true);
@@ -45,7 +45,7 @@ const Navbar = () => {
     };
 
     const handleLogout = () => {
-        if (window.confirm("Are you sure you want to logout? All data will be cleared.")) {
+        if (window.confirm("Are you sure you want to logout? All data will be cleagreen.")) {
             localStorage.removeItem('session');
             navigate('/login');
         }
@@ -62,9 +62,8 @@ const Navbar = () => {
 
     return (
         <nav className="bg-gray-800 shadow-lg px-8 py-5 flex justify-between items-center fixed top-0 left-64 right-0 z-50 h-20 border-b border-gray-700">
-            <h1 className="text-2xl font-bold text-white tracking-tight flex items-center gap-4">
-                Student
-
+            <h1 className="text-2xl font-bold text-gray-100 tracking-tight flex items-center gap-2">
+                Notification
                 {/* Notification Bell */}
                 <button
                     onClick={handleBellClick}
@@ -73,7 +72,7 @@ const Navbar = () => {
                 >
                     <span className="material-symbols-outlined text-gray-300 group-hover:text-white transition-colors">notifications</span>
                     {hasNewUpdate && (
-                        <span className="absolute top-1 right-1 w-3 h-3 bg-red-500 rounded-full border-2 border-gray-800 animate-pulse"></span>
+                        <span className="absolute top-1 right-1 w-3 h-3 bg-green-500 rounded-full border-2 border-gray-800 animate-pulse"></span>
                     )}
                 </button>
             </h1>
@@ -99,14 +98,13 @@ const Navbar = () => {
                     <div className="flex items-center space-x-4 pl-4 border-l border-gray-700">
                         <div className="flex flex-col items-end mr-2">
                             <span className="text-gray-200 font-bold text-sm tracking-wide">{user.name}</span>
-                            <span className="text-gray-500 text-xs font-mono">Reg: {user.regNo || 'N/A'}</span>
                         </div>
-                        <div className="h-11 w-11 rounded-full bg-gradient-to-br from-red-600 to-red-800 flex items-center justify-center text-white font-bold border border-red-500/30 text-lg shadow-md">
+                        <div className="h-11 w-11 rounded-full bg-gradient-to-br from-green-600 to-green-800 flex items-center justify-center text-white font-bold border border-green-500/30 text-lg shadow-md">
                             {user.name.charAt(0).toUpperCase()}
                         </div>
                         <button
                             onClick={handleLogout}
-                            className="bg-gray-700 hover:bg-red-600/20 text-red-500 hover:text-red-400 text-sm px-4 py-2 rounded-lg transition-all duration-200 font-medium flex items-center"
+                            className="bg-gray-700 hover:bg-green-600/20 text-green-500 hover:text-green-400 text-sm px-4 py-2 rounded-lg transition-all duration-200 font-medium flex items-center"
                         >
                             <span className="material-symbols-outlined text-sm mr-1">logout</span>
                             Logout

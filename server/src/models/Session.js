@@ -5,11 +5,15 @@ const sessionSchema = new mongoose.Schema({
         type: String,
         required: true
     },
-    regNo: {
+    email: {
         type: String,
         required: true,
-        uppercase: true,
+        lowercase: true,
         trim: true
+    },
+    regNo: {
+        type: String,
+        required: false // Populated after login
     },
     userId: {
         type: mongoose.Schema.Types.ObjectId,
@@ -30,21 +34,6 @@ const sessionSchema = new mongoose.Schema({
     timestamps: true
 });
 
-// Hook: Delete guest students when their session is deleted
-sessionSchema.pre('deleteOne', { document: true, query: false }, async function () {
-    try {
-        const Student = require('./Student');
 
-        // Check if this session belongs to a guest student
-        if (this.studentId && this.regNo && this.regNo.startsWith('GUEST-')) {
-            // Delete the guest student
-            await Student.findByIdAndDelete(this.studentId);
-            console.log(`Auto-deleted guest student: ${this.regNo}`);
-        }
-    } catch (error) {
-        console.error('Error in session pre-delete hook:', error);
-        throw error; // Re-throw to abort the delete operation
-    }
-});
 
 module.exports = mongoose.model('Session', sessionSchema);

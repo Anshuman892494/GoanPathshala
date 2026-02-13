@@ -5,31 +5,51 @@ const bcrypt = require('bcryptjs');
 // @route   POST /api/students
 exports.addStudent = async (req, res) => {
     try {
-        const { name, regNo, phone, password, email } = req.body;
+        const { firstName, lastName, email, phone, password } = req.body;
 
-        if (!name || !regNo) {
-            return res.status(400).json({ message: 'Name and Registration Number are required' });
+        if (!firstName || !lastName || !email) {
+            return res.status(400).json({ message: 'First Name, Last Name and Email are required' });
         }
 
-        const formattedRegNo = regNo.toString().toUpperCase().trim();
-        const existingStudent = await Student.findOne({ regNo: formattedRegNo });
+        const phoneRegex = /^[1-9]\d{9}$/;
+        if (phone && !phoneRegex.test(String(phone))) {
+            return res.status(400).json({ message: 'Phone number must be exactly 10 digits and cannot start with 0.' });
+        }
+
+        const formattedEmail = email.toString().toLowerCase().trim();
+
+        // Check for existing student
+        const existingStudent = await Student.findOne({
+            $or: [{ email: formattedEmail }, { phone: phone }]
+        });
 
         if (existingStudent) {
-            return res.status(400).json({ message: 'Student with this Registration Number already exists' });
+            if (existingStudent.email === formattedEmail) {
+                return res.status(400).json({ message: 'Student with this Email already exists' });
+            }
+            return res.status(400).json({ message: 'Student with this Phone Number already exists' });
         }
 
-        let hashedPassword = null;
+        const passwordRegex = /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[@$!%*?&])[A-Za-z\d@$!%*?&]{8,}$/;
         if (password) {
+            if (!passwordRegex.test(password)) {
+                return res.status(400).json({ message: 'Password must contain at least 8 characters, including 1 uppercase, 1 lowercase, 1 number, and 1 special character.' });
+            }
             const salt = await bcrypt.genSalt(10);
             hashedPassword = await bcrypt.hash(password, salt);
         }
 
+        const timestamp = Date.now().toString().slice(-6);
+        const random = Math.floor(Math.random() * 100).toString().padStart(2, '0');
+        const regNo = `GP-${timestamp}${random}`;
+
         const student = await Student.create({
-            name,
-            regNo: formattedRegNo,
+            firstName,
+            lastName,
+            email: formattedEmail,
             phone,
-            email,
-            password: hashedPassword
+            password: hashedPassword,
+            regNo
         });
 
         res.status(201).json(student);
@@ -42,7 +62,7 @@ exports.addStudent = async (req, res) => {
 // @route   POST /api/students/bulk
 exports.addStudentsBulk = async (req, res) => {
     try {
-        const { students } = req.body; // Array of { name, regNo, phone, password }
+        const { students } = req.body; // Array of { firstName, lastName, email, phone, password }
 
         if (!students || !Array.isArray(students) || students.length === 0) {
             return res.status(400).json({ message: 'Invalid data format. Expected an array of students.' });
@@ -55,18 +75,18 @@ exports.addStudentsBulk = async (req, res) => {
         };
 
         for (const s of students) {
-            if (!s.name || !s.regNo) {
+            if (!s.firstName || !s.lastName || !s.email) {
                 results.failed++;
-                results.errors.push(`Missing Name or RegNo for entry: ${JSON.stringify(s)}`);
+                results.errors.push(`Missing Name or Email for entry: ${JSON.stringify(s)}`);
                 continue;
             }
 
-            const formattedRegNo = s.regNo.toString().toUpperCase().trim();
-            const existing = await Student.findOne({ regNo: formattedRegNo });
+            const formattedEmail = s.email.toString().toLowerCase().trim();
+            const existing = await Student.findOne({ email: formattedEmail });
 
             if (existing) {
                 results.failed++;
-                results.errors.push(`Duplicate RegNo: ${formattedRegNo}`);
+                results.errors.push(`Duplicate Email: ${formattedEmail}`);
                 continue;
             }
 
@@ -79,16 +99,22 @@ exports.addStudentsBulk = async (req, res) => {
             }
 
             try {
+                const timestamp = Date.now().toString().slice(-6);
+                const random = Math.floor(Math.random() * 100).toString().padStart(2, '0');
+                const regNo = `GP-${timestamp}${random}`;
+
                 await Student.create({
-                    name: s.name,
-                    regNo: formattedRegNo,
+                    firstName: s.firstName,
+                    lastName: s.lastName,
+                    email: formattedEmail,
                     phone: s.phone ? String(s.phone) : undefined,
-                    password: hashedPassword
+                    password: hashedPassword,
+                    regNo
                 });
                 results.added++;
             } catch (err) {
                 results.failed++;
-                results.errors.push(`Error adding ${formattedRegNo}: ${err.message}`);
+                results.errors.push(`Error adding ${formattedEmail}: ${err.message}`);
             }
         }
 
@@ -128,27 +154,27 @@ exports.getStudentById = async (req, res) => {
 // @route   PUT /api/students/:id
 exports.updateStudent = async (req, res) => {
     try {
-        const { name, regNo, phone, password, email } = req.body;
+        const { firstName, lastName, email, phone, password } = req.body;
         const student = await Student.findById(req.params.id);
 
         if (!student) {
             return res.status(404).json({ message: 'Student not found' });
         }
 
-        // Check if regNo is being changed and if it already exists
-        if (regNo && regNo !== student.regNo) {
-            const formattedRegNo = regNo.toString().toUpperCase().trim();
-            const existingStudent = await Student.findOne({ regNo: formattedRegNo });
+        // Check if email is being changed and if it already exists
+        if (email && email !== student.email) {
+            const formattedEmail = email.toString().toLowerCase().trim();
+            const existingStudent = await Student.findOne({ email: formattedEmail });
             if (existingStudent) {
-                return res.status(400).json({ message: 'Student with this Registration Number already exists' });
+                return res.status(400).json({ message: 'Student with this Email already exists' });
             }
-            student.regNo = formattedRegNo;
+            student.email = formattedEmail;
         }
 
         // Update fields
-        if (name) student.name = name;
+        if (firstName) student.firstName = firstName;
+        if (lastName) student.lastName = lastName;
         if (phone !== undefined) student.phone = phone;
-        if (email !== undefined) student.email = email;
 
         // Update password if provided
         if (password) {
@@ -186,14 +212,14 @@ exports.deleteStudent = async (req, res) => {
 // @route   POST /api/students/login
 exports.loginStudent = async (req, res) => {
     try {
-        const { regNo, password } = req.body;
+        const { email, password } = req.body;
 
-        if (!regNo || !password) {
-            return res.status(400).json({ message: 'Registration Number and Password are required' });
+        if (!email || !password) {
+            return res.status(400).json({ message: 'Email and Password are required' });
         }
 
-        const formattedRegNo = regNo.toString().toUpperCase().trim();
-        const student = await Student.findOne({ regNo: formattedRegNo });
+        const formattedEmail = email.toString().toLowerCase().trim();
+        const student = await Student.findOne({ email: formattedEmail });
 
         if (!student) {
             return res.status(401).json({ message: 'Invalid credentials' });
@@ -209,12 +235,12 @@ exports.loginStudent = async (req, res) => {
             return res.status(401).json({ message: 'Invalid credentials' });
         }
 
-        // Create Session similar to Guest Login but linked to this student
-        // We reuse the Session model logic here
+        // Create Session
         const Session = require('../models/Session');
 
         // Check existing session
         let session = await Session.findOne({ studentId: student._id });
+        const fullName = `${student.firstName} ${student.lastName}`;
 
         if (session) {
             if (new Date() > session.expiresAt) {
@@ -224,7 +250,8 @@ exports.loginStudent = async (req, res) => {
                 return res.json({
                     sessionId: session._id,
                     studentId: session.studentId,
-                    name: student.name,
+                    name: fullName,
+                    email: student.email,
                     regNo: student.regNo,
                     expiresAt: session.expiresAt
                 });
@@ -235,7 +262,8 @@ exports.loginStudent = async (req, res) => {
         const expiresAt = new Date(Date.now() + 2 * 60 * 60 * 1000); // 2 hours
 
         session = await Session.create({
-            name: student.name,
+            name: fullName,
+            email: student.email,
             regNo: student.regNo,
             studentId: student._id,
             expiresAt
@@ -244,7 +272,8 @@ exports.loginStudent = async (req, res) => {
         res.json({
             sessionId: session._id,
             studentId: session.studentId,
-            name: student.name,
+            name: fullName,
+            email: student.email,
             regNo: student.regNo,
             expiresAt: session.expiresAt
         });
@@ -258,18 +287,19 @@ exports.loginStudent = async (req, res) => {
 // @route   POST /api/students/verify-details
 exports.verifyStudentDetails = async (req, res) => {
     try {
-        const { name, regNo, phone } = req.body;
+        const { firstName, lastName, email, phone } = req.body;
 
-        if (!name || !regNo || !phone) {
-            return res.status(400).json({ message: 'Name, RegNo, and Phone are required' });
+        if (!firstName || !lastName || !email || !phone) {
+            return res.status(400).json({ message: 'First Name, Last Name, Email, and Phone are required' });
         }
 
-        const formattedRegNo = regNo.toString().toUpperCase().trim();
+        const formattedEmail = email.toString().toLowerCase().trim();
 
         const student = await Student.findOne({
-            regNo: formattedRegNo,
+            email: formattedEmail,
             phone: phone,
-            name: { $regex: new RegExp(`^${name}$`, 'i') }
+            firstName: { $regex: new RegExp(`^${firstName}$`, 'i') },
+            lastName: { $regex: new RegExp(`^${lastName}$`, 'i') }
         });
 
         if (!student) {
@@ -286,20 +316,20 @@ exports.verifyStudentDetails = async (req, res) => {
 // @route   POST /api/students/reset-password
 exports.resetPassword = async (req, res) => {
     try {
-        const { name, regNo, phone, newPassword } = req.body;
+        const { firstName, lastName, email, phone, newPassword } = req.body;
 
-        if (!name || !regNo || !phone || !newPassword) {
+        if (!firstName || !lastName || !email || !phone || !newPassword) {
             return res.status(400).json({ message: 'All fields are required' });
         }
 
-        const formattedRegNo = regNo.toString().toUpperCase().trim();
+        const formattedEmail = email.toString().toLowerCase().trim();
 
         // Find student with matching details
-        // Using regex for case-insensitive name match
         const student = await Student.findOne({
-            regNo: formattedRegNo,
+            email: formattedEmail,
             phone: phone,
-            name: { $regex: new RegExp(`^${name}$`, 'i') }
+            firstName: { $regex: new RegExp(`^${firstName}$`, 'i') },
+            lastName: { $regex: new RegExp(`^${lastName}$`, 'i') }
         });
 
         if (!student) {
@@ -307,6 +337,11 @@ exports.resetPassword = async (req, res) => {
         }
 
         // Update password
+        const passwordRegex = /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[@$!%*?&])[A-Za-z\d@$!%*?&]{8,}$/;
+        if (!passwordRegex.test(newPassword)) {
+            return res.status(400).json({ message: 'Password must contain at least 8 characters, including 1 uppercase, 1 lowercase, 1 number, and 1 special character.' });
+        }
+
         const salt = await bcrypt.genSalt(10);
         student.password = await bcrypt.hash(newPassword, salt);
         await student.save();

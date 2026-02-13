@@ -2,6 +2,7 @@ import { useState, useEffect } from 'react';
 import { BrowserRouter, Routes, Route, Navigate } from 'react-router-dom';
 import Dashboard from './pages/Dashboard';
 import Login from './pages/Login';
+import Register from './pages/Register';
 import AdminLogin from './pages/Admin/AdminLogin';
 import AdminDashboard from './pages/Admin/AdminDashboard';
 import CreateExam from './pages/Admin/CreateExam';
@@ -16,6 +17,8 @@ import Leaderboard from './pages/Leaderboard';
 import About from './pages/About';
 import Feedback from './pages/Feedback';
 import Notes from './pages/Notes';
+import Courses from './pages/Courses';
+import Home from './pages/Home';
 import NotFound from './pages/NotFound';
 import { APP_NAME } from './utils/constants';
 
@@ -31,10 +34,7 @@ const PrivateRoute = ({ children, studentOnly = false }) => {
     return <Navigate to="/login" replace />;
   }
 
-  // Check for student-only routes
-  if (studentOnly && session.type === 'guest') {
-    return <Navigate to="/" replace />;
-  }
+
 
   return children;
 };
@@ -50,12 +50,11 @@ function App() {
     <BrowserRouter>
       <Routes>
         <Route path="/login" element={<Login />} />
+        <Route path="/register" element={<Register />} />
         <Route path="/" element={<PrivateRoute><Dashboard /></PrivateRoute>} />
         <Route path="/exams" element={<PrivateRoute><ExamList category="All Exam" /></PrivateRoute>} />
-        <Route path="/class-tests" element={<PrivateRoute studentOnly><ExamList category="Class Test" /></PrivateRoute>} />
-        <Route path="/ccc-exams" element={<PrivateRoute studentOnly><ExamList category="CCC" /></PrivateRoute>} />
-        <Route path="/adca-exams" element={<PrivateRoute studentOnly><ExamList category="ADCA" /></PrivateRoute>} />
-        <Route path="/o-level-exams" element={<PrivateRoute studentOnly><ExamList category="O Level" /></PrivateRoute>} />
+
+
         <Route path="/tally-exams" element={<PrivateRoute studentOnly><ExamList category="Tally" /></PrivateRoute>} />
         <Route path="/exams/:id" element={<PrivateRoute><ExamAttempt /></PrivateRoute>} />
         <Route path="/exams/:id/security-check" element={<PrivateRoute><ExamSecurityCheck /></PrivateRoute>} />
@@ -78,6 +77,8 @@ function App() {
 
 
         <Route path="/about" element={<PrivateRoute><About /></PrivateRoute>} />
+        <Route path="/courses" element={<PrivateRoute><Courses /></PrivateRoute>} />
+        <Route path="/home" element={<PrivateRoute><Home /></PrivateRoute>} />
         <Route path="/notes" element={<PrivateRoute studentOnly><Notes /></PrivateRoute>} />
 
         <Route path="/404" element={<NotFound />} />

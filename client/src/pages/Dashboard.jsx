@@ -23,7 +23,7 @@ const LatestExamsSection = () => {
                     return b._id.localeCompare(a._id);
                 });
 
-                // Filter out expired exams
+                // Filter out expigreen exams
                 const now = new Date();
                 const activeExams = sorted.filter(exam => {
                     if (!exam.endTime) return true;
@@ -72,7 +72,7 @@ const LatestExamsSection = () => {
     return (
         <div className="mb-10">
             <div className="flex items-center mb-6">
-                <span className="material-symbols-outlined text-red-500 mr-2 text-3xl">new_releases</span>
+                <span className="material-symbols-outlined text-green-500 mr-2 text-3xl">new_releases</span>
                 <h3 className="text-2xl font-bold text-gray-100">Latest Exams</h3>
             </div>
             <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
@@ -80,10 +80,10 @@ const LatestExamsSection = () => {
                     const completedData = completedExams.find(item => item.examId === exam._id.toString());
 
                     return (
-                        <div key={exam._id} className="bg-gray-800 rounded-xl p-6 border border-gray-700 hover:border-red-500/50 transition-all shadow-lg group flex flex-col justify-between">
+                        <div key={exam._id} className="bg-gray-800 rounded-xl p-6 border border-gray-700 hover:border-green-500/50 transition-all shadow-lg group flex flex-col justify-between">
                             <div className="relative">
-                                <span className="absolute -top-2 -right-2 bg-red-600 text-white text-[10px] font-bold px-2 py-0.5 rounded-full shadow-lg z-10 animate-pulse">NEW</span>
-                                <h4 className="font-bold text-lg text-gray-100 mb-2 group-hover:text-red-400 transition-colors line-clamp-1">{exam.title}</h4>
+                                <span className="absolute -top-2 -right-2 bg-green-600 text-white text-[10px] font-bold px-2 py-0.5 rounded-full shadow-lg z-10 animate-pulse">NEW</span>
+                                <h4 className="font-bold text-lg text-gray-100 mb-2 group-hover:text-green-400 transition-colors line-clamp-1">{exam.title}</h4>
                                 <p className="text-gray-400 text-sm line-clamp-2 mb-4">{exam.description}</p>
                             </div>
 
@@ -111,7 +111,7 @@ const LatestExamsSection = () => {
                                             ? (exam.hasSecurityKey ? `/exams/${exam._id}/security-check` : `/exams/${exam._id}/instructions`)
                                             : `/exams/${exam._id}`
                                     }
-                                    className="mt-auto w-full text-center bg-red-600/10 hover:bg-red-600 text-red-500 hover:text-white border border-red-600/50 font-semibold py-2 px-4 rounded transition-colors flex items-center justify-center"
+                                    className="mt-auto w-full text-center bg-green-600/10 hover:bg-green-600 text-green-500 hover:text-white border border-green-600/50 font-semibold py-2 px-4 rounded transition-colors flex items-center justify-center"
                                 >
                                     Start Now
                                 </Link>
@@ -130,7 +130,7 @@ const Dashboard = () => {
     const user = sessionStr ? JSON.parse(sessionStr) : null;
 
     const GuideCard = ({ number, title, engText, hindiText, color }) => (
-        <div className="bg-gray-800/50 rounded-xl p-6 border border-gray-700/50 hover:border-red-500/30 transition-all hover:bg-gray-800/80 group">
+        <div className="bg-gray-800/50 rounded-xl p-6 border border-gray-700/50 hover:border-green-500/30 transition-all hover:bg-gray-800/80 group">
             <div className={`flex items-center mb-4 ${color}`}>
                 <h4 className="font-bold text-lg">{number}. {title}</h4>
             </div>
@@ -154,7 +154,7 @@ const Dashboard = () => {
                 <main className="flex-1 p-8 bg-gray-900 relative overflow-hidden mt-20">
                     {/* Background Ambient Glow */}
                     <div className="absolute top-0 left-0 w-full h-full overflow-hidden z-0 pointer-events-none">
-                        <div className="absolute top-[-20%] right-[-10%] w-[50%] h-[50%] bg-red-900/10 rounded-full blur-[120px]"></div>
+                        <div className="absolute top-[-20%] right-[-10%] w-[50%] h-[50%] bg-green-900/10 rounded-full blur-[120px]"></div>
                         <div className="absolute bottom-[-10%] left-[-10%] w-[30%] h-[30%] bg-blue-900/05 rounded-full blur-[100px]"></div>
                     </div>
 
@@ -165,7 +165,7 @@ const Dashboard = () => {
                         <div className="mb-10 flex flex-col md:flex-row justify-between items-start md:items-end border-b border-gray-800 pb-8">
                             <div>
                                 <h2 className="text-4xl font-extrabold text-transparent bg-clip-text bg-gradient-to-r from-gray-100 to-gray-400 mb-2">
-                                    Welcome, <span className="text-red-500">{user ? user.name : 'Student'}</span>
+                                    Welcome, <span className="text-green-500">{user ? user.name : 'Student'}</span>
                                 </h2>
                                 <p className="text-gray-400 max-w-2xl">
                                     Prepare for your success with ACCI ExamPoint. Please read the instructions below carefully before starting your assessment.
@@ -188,7 +188,7 @@ const Dashboard = () => {
                             <GuideCard
                                 number="1"
                                 title="General Guidelines"
-                                color="text-red-400"
+                                color="text-green-400"
                                 engText="Welcome to the ACCI ExamPoint platform. This secure environment is designed to assess your knowledge effectively. Ensure stable internet."
                                 hindiText="ACCI ExamPoint प्लेटफॉर्म पर आपका स्वागत है। यह सुरक्षित वातावरण आपके ज्ञान का आकलन करने के लिए है। स्थिर इंटरनेट सुनिश्चित करें।"
                             />
@@ -251,7 +251,7 @@ const Dashboard = () => {
                             </div>
                             <Link
                                 to="/exams"
-                                className="group relative inline-flex items-center justify-center px-8 py-4 font-bold text-white transition-all duration-200 bg-red-600 font-lg rounded-xl focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-red-600 hover:bg-red-700 hover:shadow-lg hover:shadow-red-900/30 hover:-translate-y-1"
+                                className="group relative inline-flex items-center justify-center px-8 py-4 font-bold text-white transition-all duration-200 bg-green-600 font-lg rounded-xl focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-green-600 hover:bg-green-700 hover:shadow-lg hover:shadow-green-900/30 hover:-translate-y-1"
                             >
                                 <span className="mr-2 text-lg">View Available Exams</span>
                                 <span className="material-symbols-outlined group-hover:translate-x-1 transition-transform">arrow_forward</span>

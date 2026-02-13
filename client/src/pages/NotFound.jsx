@@ -5,7 +5,7 @@ import { APP_NAME } from '../utils/constants';
 const NotFound = () => {
     return (
         <div className="min-h-screen bg-gray-900 flex flex-col justify-center items-center p-6 text-center">
-            <h1 className="text-6xl font-extrabold text-red-600 mb-2">404</h1>
+            <h1 className="text-6xl font-extrabold text-green-600 mb-2">404</h1>
 
             <p className="text-gray-300 text-xl mb-4">
                 Oops! Page not found
@@ -17,7 +17,7 @@ const NotFound = () => {
 
             <Link
                 to="/"
-                className="bg-red-600 hover:bg-red-700 text-white font-bold py-3 px-8 rounded-lg transition-colors shadow-lg"
+                className="bg-green-600 hover:bg-green-700 text-white font-bold py-3 px-8 rounded-lg transition-colors shadow-lg"
             >
                 Go back to Dashboard
             </Link>

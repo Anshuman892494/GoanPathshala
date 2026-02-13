@@ -1,29 +1,37 @@
 const mongoose = require('mongoose');
 
 const studentSchema = new mongoose.Schema({
-    regNo: {
-        type: String,
-        required: true,
-        unique: true,
-        uppercase: true,
-        trim: true
-    },
-    name: {
+    firstName: {
         type: String,
         required: true,
         trim: true
     },
-    // Future extensible fields
-    phone: {
-        type: Number,
+    lastName: {
+        type: String,
+        required: true,
+        trim: true
     },
     email: {
         type: String,
-        lowercase: true
+        required: true,
+        unique: true,
+        lowercase: true,
+        trim: true
+    },
+    phone: {
+        type: String,
+        required: true,
+        unique: true,
+        trim: true
     },
     password: {
         type: String,
-        required: false // Optional - only for student login, not for guests
+        required: true
+    },
+    regNo: {
+        type: String,
+        unique: true,
+        sparse: true
     }
 }, {
     timestamps: true
