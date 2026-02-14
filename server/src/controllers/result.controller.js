@@ -1,6 +1,7 @@
 const Result = require('../models/Result');
 const Exam = require('../models/Exam');
 const Question = require('../models/Question');
+const Student = require('../models/Student'); // Import Student model
 
 // @desc    Submit Exam & Calculate Score
 // @route   POST /api/results/submit
@@ -51,6 +52,23 @@ exports.submitExam = async (req, res) => {
 
         const totalQuestions = questions.length;
         const score = correct;
+
+        // --- MARK ATTENDANCE LOGIC ---
+        try {
+            const student = await Student.findById(session.studentId);
+            if (student) {
+                const today = new Date().toLocaleDateString('en-CA');
+                if (!student.attendance.includes(today)) {
+                    student.attendance.push(today);
+                    await student.save();
+                    console.log(`Attendance marked for student ${student._id} on ${today} via exam submission.`);
+                }
+            }
+        } catch (attError) {
+            console.error("Error marking attendance during exam submission:", attError);
+            // Don't fail the exam submission if attendance fails
+        }
+        // -----------------------------
 
         // Check for existing result for this student and exam (Permanent Tracking)
         let result = await Result.findOne({ examId: examId, studentId: session.studentId });
@@ -121,10 +139,54 @@ exports.getUserResults = async (req, res) => {
             return res.status(404).json({ message: 'Session not found or expired' });
         }
 
+        // 1. Get user's results
         const results = await Result.find({ studentId: session.studentId })
             .populate('examId', 'title description duration')
-            .sort({ updatedAt: -1 });
-        res.json(results);
+            .sort({ updatedAt: 1 }); // Sort by date ascending for graph
+
+        if (results.length === 0) {
+            return res.json([]);
+        }
+
+        // 2. Get Exam IDs to aggregate
+        const examIds = results.map(r => r.examId._id);
+
+        // 3. Aggregate Class Averages for these exams
+        const aggregation = await Result.aggregate([
+            { $match: { examId: { $in: examIds } } },
+            {
+                $group: {
+                    _id: "$examId",
+                    avgScore: { $avg: "$score" },
+                    avgTotalQuestions: { $avg: "$totalQuestions" }
+                }
+            }
+        ]);
+
+        // Create a map for easy lookup
+        const avgMap = {};
+        aggregation.forEach(item => {
+            avgMap[item._id.toString()] = item;
+        });
+
+        // 4. Attach average to results
+        const resultsWithAvg = results.map(result => {
+            const examIdStr = result.examId._id.toString();
+            const avgData = avgMap[examIdStr];
+
+            let classAvgPercentage = 0;
+            if (avgData && avgData.avgTotalQuestions > 0) {
+                classAvgPercentage = Math.round((avgData.avgScore / avgData.avgTotalQuestions) * 100);
+            }
+
+            return {
+                ...result.toObject(),
+                classAverage: classAvgPercentage,
+                studentPercentage: Math.round((result.score / result.totalQuestions) * 100)
+            };
+        });
+
+        res.json(resultsWithAvg);
     } catch (error) {
         res.status(500).json({ message: error.message });
     }

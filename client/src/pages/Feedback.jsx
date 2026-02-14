@@ -68,7 +68,7 @@ const Feedback = () => {
                             </div>
                         ) : (
                             <form onSubmit={handleSubmit} className="space-y-6">
-                                {error && <div className="bg-red-900/50 border border-red-500 text-red-200 p-4 rounded">{error}</div>}
+                                {error && <div className="bg-green-900/50 border border-green-500 text-green-200 p-4 rounded">{error}</div>}
 
                                 <div>
                                     <label className="block text-gray-400 text-sm font-medium mb-2">Name</label>
@@ -77,9 +77,9 @@ const Feedback = () => {
                                         name="name"
                                         value={formData.name}
                                         onChange={handleChange}
-                                        required
+                                        requigreen
                                         disabled={loading}
-                                        className="w-full bg-gray-700 border border-gray-600 rounded-lg p-3 text-white focus:outline-none focus:border-red-600 focus:ring-1 focus:ring-red-600 disabled:opacity-50 transition-colors"
+                                        className="w-full bg-gray-700 border border-gray-600 rounded-lg p-3 text-white focus:outline-none focus:border-green-600 focus:ring-1 focus:ring-green-600 disabled:opacity-50 transition-colors"
                                         placeholder="Your Name"
                                     />
                                 </div>
@@ -91,9 +91,9 @@ const Feedback = () => {
                                         name="email"
                                         value={formData.email}
                                         onChange={handleChange}
-                                        required
+                                        requigreen
                                         disabled={loading}
-                                        className="w-full bg-gray-700 border border-gray-600 rounded-lg p-3 text-white focus:outline-none focus:border-red-600 focus:ring-1 focus:ring-red-600 disabled:opacity-50 transition-colors"
+                                        className="w-full bg-gray-700 border border-gray-600 rounded-lg p-3 text-white focus:outline-none focus:border-green-600 focus:ring-1 focus:ring-green-600 disabled:opacity-50 transition-colors"
                                         placeholder="your.email@example.com"
                                     />
                                 </div>
@@ -104,10 +104,10 @@ const Feedback = () => {
                                         name="message"
                                         value={formData.message}
                                         onChange={handleChange}
-                                        required
+                                        requigreen
                                         rows="6"
                                         disabled={loading}
-                                        className="w-full bg-gray-700 border border-gray-600 rounded-lg p-3 text-white focus:outline-none focus:border-red-600 focus:ring-1 focus:ring-red-600 disabled:opacity-50 transition-colors"
+                                        className="w-full bg-gray-700 border border-gray-600 rounded-lg p-3 text-white focus:outline-none focus:border-green-600 focus:ring-1 focus:ring-green-600 disabled:opacity-50 transition-colors"
                                         placeholder="Type your feedback or query here..."
                                     ></textarea>
                                 </div>
@@ -115,7 +115,7 @@ const Feedback = () => {
                                 <button
                                     type="submit"
                                     disabled={loading}
-                                    className="w-full bg-red-600 hover:bg-red-700 text-white font-bold py-3 px-4 rounded-lg transition-all transform active:scale-[0.98] disabled:opacity-50 disabled:cursor-not-allowed flex justify-center items-center shadow-lg hover:shadow-red-900/20"
+                                    className="w-full bg-green-600 hover:bg-green-700 text-white font-bold py-3 px-4 rounded-lg transition-all transform active:scale-[0.98] disabled:opacity-50 disabled:cursor-not-allowed flex justify-center items-center shadow-lg hover:shadow-green-900/20"
                                 >
                                     {loading ? (
                                         <>
@@ -129,9 +129,6 @@ const Feedback = () => {
                                         </>
                                     )}
                                 </button>
-                                <p className="text-gray-400 text-xs text-center mt-3">
-                                    इसमें कुछ समय लग सकता है, कृपया धैर्य बनाए रखें। आपके सहयोग और समझ के लिए धन्यवाद।
-                                </p>
                             </form>
                         )}
                     </div>

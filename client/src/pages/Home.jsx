@@ -55,7 +55,7 @@ const Home = () => {
                                     What We Offer
                                 </h2>
                                 <div className="flex flex-wrap gap-3">
-                                    {["O Level (NIELIT)", "ADCA", "DCA", "Tally Prime", "OMC"].map(tag => (
+                                    {["HTML & CSS", "Javascript", "DSA", "JAVA", "Python", "Full Stack", "Mern Stack"].map(tag => (
                                         <span key={tag} className="bg-gray-900 text-gray-400 border border-gray-700 px-6 py-3 rounded-2xl text-sm font-medium hover:border-green-500/50 hover:text-white transition-all">
                                             {tag}
                                         </span>

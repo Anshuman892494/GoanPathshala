@@ -410,8 +410,7 @@ const ExamAttempt = () => {
             {/* Header */}
             <header className="bg-gray-800 border-b border-gray-700 h-20 flex items-center justify-between px-8 py-5 shrink-0 shadow-lg">
                 <div className="flex items-center space-x-6">
-                    {/* <div className="text-2xl font-bold text-red-500 tracking-tight">ACCI ExamPoint</div> */}
-                    <span className="text-2xl font-bold text-red-600 tracking-tighter">{APP_NAME} <span className="text-white"> ExamPoint</span></span>
+                    <span className="text-2xl font-bold text-red-600 tracking-tighter">{APP_NAME} <span className="text-white">Setu</span></span>
                     <div className="h-8 w-px bg-gray-600/50"></div>
                     <div className="text-gray-300 text-sm font-medium hidden md:block">{exam.title}</div>
                     <div className="hidden lg:flex items-center text-gray-400 text-xs font-medium bg-gray-700/50 px-3 py-1.5 rounded-full border border-gray-600/50">

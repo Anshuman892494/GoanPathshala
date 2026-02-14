@@ -3,7 +3,7 @@ import { Link } from 'react-router-dom';
 import Navbar from '../components/Navbar';
 import Sidebar from '../components/Sidebar';
 import Loader from '../components/Loader';
-import { getLeaderboard, getStudentById, updateStudent, markAttendance } from '../services/examApi';
+import { getLeaderboard, getStudentById, updateStudent } from '../services/examApi';
 import { APP_NAME } from '../utils/constants';
 
 const EditProfileModal = ({ isOpen, onClose, user, onSave }) => {
@@ -317,6 +317,133 @@ const ProfileCard = ({ user, onEditClick }) => (
     </div>
 );
 
+const MonthView = ({ attendance = [] }) => {
+    const [currentDate, setCurrentDate] = useState(new Date());
+
+    const getDaysInMonth = (year, month) => new Date(year, month + 1, 0).getDate();
+    const getFirstDayOfMonth = (year, month) => new Date(year, month, 1).getDay();
+
+    const year = currentDate.getFullYear();
+    const month = currentDate.getMonth();
+    const daysInMonth = getDaysInMonth(year, month);
+    const firstDay = getFirstDayOfMonth(year, month);
+    // Adjust for Monday start if needed, but standard Sunday-Start is usually fine.
+    // 0 = Sunday, 1 = Monday. Let's stick to Sunday start for consistency with standard calendars.
+
+    const monthNames = ["January", "February", "March", "April", "May", "June", "July", "August", "September", "October", "November", "December"];
+
+    const handlePrevMonth = () => {
+        setCurrentDate(new Date(year, month - 1, 1));
+    };
+
+    const handleNextMonth = () => {
+        setCurrentDate(new Date(year, month + 1, 1));
+    };
+
+    const isToday = (d) => {
+        const today = new Date();
+        return d === today.getDate() && month === today.getMonth() && year === today.getFullYear();
+    };
+
+    const getDayStatus = (d) => {
+        const dateStr = `${year}-${(month + 1).toString().padStart(2, '0')}-${d.toString().padStart(2, '0')}`;
+        return attendance.includes(dateStr) ? 'present' : 'absent';
+    };
+
+    const days = [];
+    // Empty slots for days before the 1st
+    for (let i = 0; i < firstDay; i++) {
+        days.push(<div key={`empty-${i}`} className="h-10"></div>);
+    }
+    // Actual days
+    for (let d = 1; d <= daysInMonth; d++) {
+        const status = getDayStatus(d);
+        const dayIsToday = isToday(d);
+        days.push(
+            <div key={d} className={`h-10 flex items-center justify-center rounded-lg text-sm font-bold relative group
+                ${status === 'present' ? 'bg-green-500/20 text-green-400 border border-green-500/30' : 'bg-gray-800/40 text-gray-500'}
+                ${dayIsToday ? 'ring-2 ring-white/50' : ''}
+            `}>
+                <span className="relative z-10">{d}</span>
+                {status === 'present' && <div className="absolute inset-0 bg-green-500/10 blur-sm rounded-lg"></div>}
+            </div>
+        );
+    }
+
+    return (
+        <div className="bg-gray-800/20 backdrop-blur-sm rounded-[2rem] p-8 border border-gray-800 relative overflow-hidden">
+            <div className="flex justify-between items-center mb-6">
+                <button onClick={handlePrevMonth} className="p-2 hover:bg-white/5 rounded-full text-gray-400 hover:text-white transition-colors">
+                    <span className="material-symbols-outlined">chevron_left</span>
+                </button>
+                <h3 className="text-xl font-bold text-white tracking-tight flex items-center gap-2">
+                    <span className="material-symbols-outlined text-green-500">calendar_month</span>
+                    {monthNames[month]} <span className="text-gray-500">{year}</span>
+                </h3>
+                <button onClick={handleNextMonth} className="p-2 hover:bg-white/5 rounded-full text-gray-400 hover:text-white transition-colors">
+                    <span className="material-symbols-outlined">chevron_right</span>
+                </button>
+            </div>
+
+            <div className="grid grid-cols-7 gap-2 text-center mb-2">
+                {['Sun', 'Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat'].map(day => (
+                    <div key={day} className="text-[10px] uppercase font-black text-gray-500 tracking-widest">{day}</div>
+                ))}
+            </div>
+            <div className="grid grid-cols-7 gap-2">
+                {days}
+            </div>
+            <div className="mt-6 flex justify-center gap-6 text-[10px] font-black text-gray-500 uppercase tracking-widest opacity-60">
+                <div className="flex items-center gap-2">
+                    <div className="w-2.5 h-2.5 rounded-[2px] bg-green-500/50 border border-green-500/50"></div>
+                    <span>Present</span>
+                </div>
+                <div className="flex items-center gap-2">
+                    <div className="w-2.5 h-2.5 rounded-[2px] bg-gray-800/50"></div>
+                    <span>Absent</span>
+                </div>
+            </div>
+        </div>
+    );
+};
+
+const AttendanceSection = ({ attendance = [] }) => {
+    const [viewMode, setViewMode] = useState('month'); // 'heatmap' or 'month'
+
+    return (
+        <div className="space-y-4">
+            <div className="flex items-center justify-between">
+                <div className="flex items-center gap-3">
+                    <span className="w-1 h-6 bg-green-500 rounded-full shadow-[0_0_10px_rgba(34,197,94,0.4)]"></span>
+                    <h3 className="text-lg font-bold text-white tracking-tight text-xs uppercase opacity-80">Attendance</h3>
+                </div>
+                <div className="bg-gray-800/50 p-1 rounded-xl flex gap-1">
+                    <button
+                        onClick={() => setViewMode('month')}
+                        className={`px-3 py-1.5 rounded-lg text-[10px] font-black uppercase tracking-widest transition-all ${viewMode === 'month' ? 'bg-green-600 text-white shadow-lg' : 'text-gray-500 hover:text-gray-300'}`}
+                    >
+                        Calendar
+                    </button>
+                    <button
+                        onClick={() => setViewMode('heatmap')}
+                        className={`px-3 py-1.5 rounded-lg text-[10px] font-black uppercase tracking-widest transition-all ${viewMode === 'heatmap' ? 'bg-green-600 text-white shadow-lg' : 'text-gray-500 hover:text-gray-300'}`}
+                    >
+                        Heatmap
+                    </button>
+                </div>
+            </div>
+
+            {viewMode === 'heatmap' ? (
+                <HeatmapSection attendance={attendance} />
+            ) : (
+                <MonthView attendance={attendance} />
+            )}
+        </div>
+    );
+}
+
+
+/* HeatmapSection component remains unchanged, just not exported or moved */
 const HeatmapSection = ({ attendance = [] }) => {
     const now = new Date();
     const currentYear = now.getFullYear();
@@ -438,6 +565,7 @@ const HeatmapSection = ({ attendance = [] }) => {
     );
 };
 
+
 const Dashboard = () => {
     const [userData, setUserData] = useState(null);
     const [isModalOpen, setIsModalOpen] = useState(false);
@@ -481,29 +609,6 @@ const Dashboard = () => {
         fetchDashboardData();
     }, []);
 
-    // Attendance Marking Timer
-    useEffect(() => {
-        if (!userData || !userData.studentId) return;
-
-        // Check if today's attendance is already marked locally to avoid redundant timer
-        const today = new Date().toLocaleDateString('en-CA');
-        if (userData.attendance?.includes(today)) return;
-
-        const timer = setTimeout(async () => {
-            try {
-                const { data } = await markAttendance(userData.studentId);
-                if (data.attendance) {
-                    const updatedUser = { ...userData, attendance: data.attendance };
-                    setUserData(updatedUser);
-                    localStorage.setItem('session', JSON.stringify(updatedUser));
-                }
-            } catch (error) {
-                console.error('Failed to mark attendance:', error);
-            }
-        }, 300000); // 5 minutes (300,000 ms)
-
-        return () => clearTimeout(timer);
-    }, [userData?.studentId]);
 
     const handleSaveProfile = async (updatedDetails) => {
         const updateData = {

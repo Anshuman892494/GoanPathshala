@@ -4,7 +4,7 @@ import Sidebar from '../components/Sidebar';
 import Loader from '../components/Loader';
 import { getStudentById, getUserResults, getLeaderboard, getStudentStats } from '../services/examApi';
 import {
-    LineChart, Line, XAxis, YAxis, CartesianGrid, Tooltip, ResponsiveContainer,
+    LineChart, Line, XAxis, YAxis, CartesianGrid, Tooltip, ResponsiveContainer, Legend,
     AreaChart, Area, BarChart, Bar, Cell
 } from 'recharts';
 
@@ -30,7 +30,7 @@ const Progress = () => {
             const { data: student } = await getStudentById(studentId);
             setUserData(student);
 
-            const { data: results } = await getUserResults(studentId);
+            const { data: results } = await getUserResults(session.sessionId);
             setExamResults(results || []);
 
             const { data: statsData } = await getStudentStats(studentId);
@@ -51,27 +51,42 @@ const Progress = () => {
 
     // Prepare chart data
     const performanceData = useMemo(() => {
-        return [...examResults]
-            .sort((a, b) => new Date(a.createdAt) - new Date(b.createdAt))
-            .map(r => ({
-                name: new Date(r.createdAt).toLocaleDateString('en-GB', { day: 'numeric', month: 'short' }),
-                score: r.percentage
-            }));
+        if (!examResults || examResults.length === 0) return [];
+        // Results are already sorted by date from backend now (or we can ensure sort here)
+        return examResults.map((result, index) => ({
+            name: `Exam ${index + 1}`,
+            fullTitle: result.examTitle || result.examId?.title,
+            studentScore: result.studentPercentage || 0,
+            classAverage: result.classAverage || 0,
+            date: new Date(result.createdAt).toLocaleDateString()
+        }));
     }, [examResults]);
 
     const attendanceData = useMemo(() => {
         if (!userData?.attendance) return [];
-        const monthlyCounts = {};
+
+        const currentYear = new Date().getFullYear();
+        const monthNames = ["Jan", "Feb", "Mar", "Apr", "May", "Jun", "Jul", "Aug", "Sep", "Oct", "Nov", "Dec"];
+
+        // Initialize all 12 months with 0
+        const fullYearData = monthNames.map((month, index) => ({
+            month,
+            days: 0,
+            monthIndex: index + 1 // 1-based index for matching
+        }));
+
         userData.attendance.forEach(date => {
-            const [y, m] = date.split('-');
-            const key = `${new Date(y, m - 1).toLocaleString('default', { month: 'short' })} ${y}`;
-            monthlyCounts[key] = (monthlyCounts[key] || 0) + 1;
+            const [y, m] = date.split('-').map(Number);
+            if (y === currentYear) {
+                // m is 1-based from YYYY-MM-DD
+                const monthData = fullYearData.find(d => d.monthIndex === m);
+                if (monthData) {
+                    monthData.days++;
+                }
+            }
         });
 
-        return Object.entries(monthlyCounts).map(([month, count]) => ({
-            month,
-            days: count
-        })).slice(-6); // Last 6 months
+        return fullYearData;
     }, [userData]);
 
     if (loading) return <Loader />;
@@ -141,33 +156,53 @@ const Progress = () => {
                                 <div className="h-[300px] w-full">
                                     <ResponsiveContainer width="100%" height="100%">
                                         <LineChart data={performanceData}>
-                                            <CartesianGrid strokeDasharray="3 3" stroke="#374151" vertical={false} />
+                                            <CartesianGrid strokeDasharray="3 3" stroke="#374151" />
                                             <XAxis
                                                 dataKey="name"
                                                 stroke="#9CA3AF"
-                                                fontSize={10}
-                                                tickLine={false}
-                                                axisLine={false}
-                                                dy={10}
+                                                tick={{ fill: '#9CA3AF' }}
                                             />
                                             <YAxis
                                                 stroke="#9CA3AF"
-                                                fontSize={10}
-                                                tickLine={false}
-                                                axisLine={false}
+                                                tick={{ fill: '#9CA3AF' }}
                                                 domain={[0, 100]}
                                             />
                                             <Tooltip
-                                                contentStyle={{ backgroundColor: '#1F2937', border: '1px solid #374151', borderRadius: '12px' }}
-                                                itemStyle={{ color: '#22C55E', fontWeight: 'bold' }}
+                                                contentStyle={{
+                                                    backgroundColor: '#1F2937',
+                                                    border: '1px solid #374151',
+                                                    borderRadius: '0.5rem'
+                                                }}
+                                                labelStyle={{ color: '#F3F4F6', marginBottom: '0.5rem' }}
+                                                formatter={(value, name) => [
+                                                    `${value}%`,
+                                                    name === 'studentScore' ? 'My Score' : 'Class Average'
+                                                ]}
+                                                labelFormatter={(label, payload) => {
+                                                    if (payload && payload.length > 0) {
+                                                        return payload[0].payload.fullTitle;
+                                                    }
+                                                    return label;
+                                                }}
+                                            />
+                                            <Legend />
+                                            <Line
+                                                type="monotone"
+                                                dataKey="studentScore"
+                                                name="My Score"
+                                                stroke="#8B5CF6"
+                                                strokeWidth={3}
+                                                dot={{ fill: '#8B5CF6', r: 4 }}
+                                                activeDot={{ r: 6 }}
                                             />
                                             <Line
                                                 type="monotone"
-                                                dataKey="score"
-                                                stroke="#3B82F6"
-                                                strokeWidth={4}
-                                                dot={{ fill: '#3B82F6', strokeWidth: 2, r: 4, stroke: '#1F2937' }}
-                                                activeDot={{ r: 6, stroke: '#1F2937', strokeWidth: 2 }}
+                                                dataKey="classAverage"
+                                                name="Class Average"
+                                                stroke="#F59E0B"
+                                                strokeWidth={3}
+                                                strokeDasharray="5 5"
+                                                dot={{ fill: '#F59E0B', r: 4 }}
                                             />
                                         </LineChart>
                                     </ResponsiveContainer>

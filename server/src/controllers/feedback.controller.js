@@ -11,10 +11,10 @@ exports.sendFeedback = async (req, res) => {
 
     try {
         const { data, error } = await resend.emails.send({
-            from: process.env.EMAIL_FROM || 'onboarding@resend.dev',
+            from: process.env.EMAIL_FROM,
             to: process.env.EMAIL_TO,
             reply_to: email, // Set the user's email as the reply-to address
-            subject: `ACCIEXAMPoint - Feedback from ${name}`,
+            subject: `शिक्षाSetu - Feedback from ${name}`,
             html: `
                 <div style="font-family: Arial, sans-serif; padding: 20px; color: #333;">
                     <h2 style="color: #dc2626;">New Feedback Received</h2>
