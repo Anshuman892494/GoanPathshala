@@ -33,7 +33,7 @@ const Home = () => {
                                     Our Mission & Vision
                                 </h2>
                                 <p className="text-gray-400 text-lg leading-relaxed mb-6 font-light">
-                                    GaonSetu is dedicated to bridging the educational gap by providing state-of-the-art computer education and professional courses to every corner of the nation.
+                                    शिक्षाSetu is dedicated to bridging the educational gap by providing state-of-the-art computer education and professional courses to every corner of the nation.
                                 </p>
                                 <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
                                     <div className="bg-gray-900/50 p-6 rounded-2xl border border-gray-800 group hover:border-green-500/30 transition-colors">
@@ -156,12 +156,6 @@ const Home = () => {
                                 <p className="text-gray-400 text-lg mb-8 leading-relaxed flex-1">
                                     Where learning meets like-minded peers. Connect, collaborate, and stay updated on our latest offerings.
                                 </p>
-                                <div className="flex -space-x-4 mb-8">
-                                    {[1, 2, 3, 4, 5].map(i => (
-                                        <img key={i} src={`https://i.pravatar.cc/100?u=${i + 10}`} className="w-12 h-12 rounded-full border-4 border-gray-900 object-cover" alt="Community Member" />
-                                    ))}
-                                    <div className="w-12 h-12 rounded-full border-4 border-gray-900 bg-gray-800 flex items-center justify-center text-xs font-bold text-green-500">+1.2k</div>
-                                </div>
                                 <button className="w-full bg-green-600 hover:bg-green-700 text-white font-black py-4 rounded-2xl transition-all shadow-xl shadow-green-900/20 flex items-center justify-center text-xl uppercase tracking-tighter cursor-pointer">
                                     Join Community <span className="material-symbols-outlined ml-2">group</span>
                                 </button>

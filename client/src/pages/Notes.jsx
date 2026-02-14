@@ -35,10 +35,10 @@ const Notes = () => {
                         <div className="mb-10 flex flex-col md:flex-row justify-between items-start md:items-end border-b border-gray-800 pb-8">
                             <div>
                                 <h2 className="text-4xl font-extrabold text-transparent bg-clip-text bg-gradient-to-r from-gray-100 to-gray-400 mb-2">
-                                    Institute Notes
+                                    Notes
                                 </h2>
                                 <p className="text-gray-400 max-w-2xl">
-                                    Download valuable study materials and notes provided by ACCI Institute to enhance your learning experience.
+                                    Download valuable study materials and notes provided by Institute to enhance your learning experience.
                                 </p>
                             </div>
                         </div>

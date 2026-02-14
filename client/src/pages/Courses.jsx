@@ -38,9 +38,9 @@ const Courses = () => {
         },
         {
             id: 2,
-            title: "ADCA: Master Computer Applications",
-            thumbnail: "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTz6z6z6z6z6z6z6z6z6z6z6z6z6z6z6z6z6z6&s",
-            category: "Diploma",
+            title: "DSA: Data Structure and Algorithm",
+            thumbnail: "https://i.ytimg.com/vi/yRpLlJmRo2w/hqdefault.jpg?sqp=-oaymwEmCKgBEF5IWvKriqkDGQgBFQAAiEIYAdgBAeIBCggYEAIYBjgBQAE=&rs=AOn4CLDx10NPf_oh3r2UYY7Xv6fjnsLDyQ",
+            category: "DSA",
             videoCount: 8,
             duration: "12.2 hours",
             instructor: {
@@ -52,17 +52,17 @@ const Courses = () => {
                 {
                     chapter: "1 - Advance Office Automation",
                     lectures: [
-                        { title: "Expert Level Excel", duration: "25 min", url: "https://www.youtube.com/watch?v=0_vP8KskD_k" },
-                        { title: "Advanced PowerPoint Designs", duration: "20 min", url: "https://www.youtube.com/watch?v=u7Tku3_RGPs" }
+                        { title: "Introduction to Java", duration: "19 min", url: "https://youtu.be/yRpLlJmRo2w?list=PLfqMhTWNBTe3LtFWcvwpqTkUSlB32kJop" },
+                        { title: "Variables in Java", duration: "42 min", url: "https://youtu.be/LusTv0RlnSU?list=PLfqMhTWNBTe3LtFWcvwpqTkUSlB32kJop" }
                     ]
                 }
             ]
         },
         {
             id: 3,
-            title: "Tally Prime with GST: Pro Accounting",
-            thumbnail: "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcR_x_x_x_x_x_x_x_x_x_x_x_x_x_x_x_x_x_x&s",
-            category: "Professional",
+            title: "React Js Tutorials",
+            thumbnail: "https://i.ytimg.com/vi/-mJFZp84TIY/hqdefault.jpg?sqp=-oaymwEnCNACELwBSFryq4qpAxkIARUAAIhCGAHYAQHiAQoIGBACGAY4AUAB&rs=AOn4CLDvPH31kenAQUMZotrGOZcsgPuEgA",
+            category: "React",
             videoCount: 15,
             duration: "6.0 hours",
             instructor: {
@@ -72,10 +72,10 @@ const Courses = () => {
             },
             syllabus: [
                 {
-                    chapter: "1 - Fundamentals of Accounting",
+                    chapter: "1 - Fundamentals of React",
                     lectures: [
-                        { title: "Introduction to Tally Prime", duration: "12 min", url: "https://www.youtube.com/watch?v=R9N3HREpW_8" },
-                        { title: "GST Setup in Tally", duration: "18 min", url: "https://www.youtube.com/watch?v=9_i1X_W5U0U" }
+                        { title: "Introduction to React Js + Installation", duration: "12 min", url: "https://youtu.be/-mJFZp84TIY?list=PLu0W_9lII9agx66oZnT6IyhcMIbUMNMdt" },
+                        { title: "JavaScript Refresher ", duration: "18 min", url: "https://youtu.be/kFe-RRaOy48?list=PLu0W_9lII9agx66oZnT6IyhcMIbUMNMdt" }
                     ]
                 }
             ]
