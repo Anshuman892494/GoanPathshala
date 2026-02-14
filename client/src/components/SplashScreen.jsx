@@ -41,9 +41,6 @@ const SplashScreen = ({ onFinish }) => {
                     <p className="text-gray-300 text-lg font-light tracking-wide">
                         Online Learning Platform for Urban Students
                     </p>
-                    {/* <p className="text-xl text-gray-100 font-semibold mt-2 tracking-wide">
-                        Advance Computer Career Institute
-                    </p> */}
                 </div>
 
                 {/* Progress Bar Container */}
