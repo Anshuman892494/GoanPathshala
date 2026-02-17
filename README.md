@@ -13,7 +13,7 @@ Welcome to **शिक्षाSetu**, a comprehensive solution for managing and
 
 ---
 
-## Screenshot - Admin Dashboard
+## Screenshot 
 <img width="1920" height="1080" alt="image" src="https://github.com/Anshuman892494/GoanPathshala/blob/main/Screenshot%202026-02-17%20110824.png?raw=true" />
 
 
