@@ -1,4 +1,4 @@
-# 🎓 GoanPathshala
+# 🎓 शिक्षाSetu
 
 ![License](https://img.shields.io/badge/license-ISC-blue.svg)
 ![React](https://img.shields.io/badge/frontend-React_19-61DAFB?logo=react)
@@ -9,9 +9,13 @@
 
 > **A modern, secure, and responsive online examination platform.**
 
-Welcome to **GoanPathshala**, a comprehensive solution for managing and conducting online exams. This repository houses the source code for the application, featuring a robust Node.js/Express backend and a dynamic React frontend.
+Welcome to **शिक्षाSetu**, a comprehensive solution for managing and conducting online exams. This repository houses the source code for the application, featuring a robust Node.js/Express backend and a dynamic React frontend.
 
 ---
+
+## Screenshot - Admin Dashboard
+<img width="1920" height="1080" alt="image" src="https://github.com/Anshuman892494/GoanPathshala/blob/main/Screenshot%202026-02-17%20110824.png?raw=true" />
+
 
 ## 🌟 Overview
 
@@ -69,8 +73,8 @@ Ensure you have the following installed:
 
 1.  **Clone the Repository**
     ```bash
-    git clone https://github.com/Anshuman892494/GoanPathshala.git
-    cd GoanPathshala
+    git clone https://github.com/Anshuman892494/शिक्षाSetu.git
+    cd शिक्षाSetu
     ```
 
 2.  **Install Dependencies**
@@ -102,7 +106,7 @@ VITE_API_URL=http://localhost:5000/api
 Create a file named `.env` in the `server` directory:
 ```env
 PORT=5000
-MONGODB_URI=mongodb://localhost:27017/goanpathshala
+MONGODB_URI=mongodb://localhost:27017/शिक्षाSetu
 JWT_SECRET=your_super_secret_key_change_this
 RESEND_API_KEY=your_resend_api_key_optional
 ```
@@ -130,7 +134,7 @@ npm run dev
 ## 📂 Project Structure
 
 ```bash
-GoanPathshala/
+शिक्षाSetu/
 ├── client/                 # Frontend React Application
 │   ├── public/             # Static assets
 │   ├── src/
